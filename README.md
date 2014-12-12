@@ -1,6 +1,8 @@
 Wallhaven
 =========
 
+[![Build Status](https://travis-ci.org/ivkos/Wallhaven.svg)](https://travis-ci.org/ivkos/Wallhaven)
+
 ## Description
 Using this PHP class, you can search with any or all of the following criteria and list matching [Wallhaven](http://wallhaven.cc) wallpapers:
 * tags
@@ -14,7 +16,7 @@ Using this PHP class, you can search with any or all of the following criteria a
 The class also allows you to optionally login with your Wallhaven username and password, so that it list all available wallpapers, otherwise inaccessible if not logged in.
 
 ## Requirements
-* PHP 5
+* PHP 5.4
 * cURL library for PHP
 
 ## Examples
@@ -31,6 +33,9 @@ try {
   
   // You can also login using your credentials
   $whLogin = new Wallhaven("YOUR_USERNAME", "YOUR_PASSWORD");
+  
+  // Get information for a specific wallpaper
+  $wallpaperInfo = $wh->getWallpaperInformation(109965);
   
   // Get a list of random wallpapers
   $wallpapersRandom = $wh->getRandom();
