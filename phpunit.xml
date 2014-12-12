@@ -1,0 +1,7 @@
+<phpunit>
+    <testsuites>
+        <testsuite name="wallhaven">
+            <file>WallhavenTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>
