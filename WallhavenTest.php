@@ -4,6 +4,12 @@ require 'Wallhaven.php';
 
 class WallhavenTest extends PHPUnit_Framework_TestCase
 {
+    public function testCredentialsNotNull()
+    {
+        $this->assertNotEmpty(getenv('WALLHAVENUSERNAME'));
+        $this->assertNotEmpty(getenv('WALLHAVENPASSWORD'));
+    }
+
     public function testLogin()
     {
         new Wallhaven(getenv('WALLHAVENUSERNAME'), getenv('WALLHAVENPASSWORD'));
@@ -12,12 +18,12 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
     /**
      * @expectedException Exception
      */
-    public function testLoginWrongCredentials()
+    public function testLoginFail()
     {
         new Wallhaven("this user should not exist", "wrong password");
     }
 
-    public function testSearch()
+    public function testSearchSafeLoggedOut()
     {
         $wh = new Wallhaven();
 
@@ -26,7 +32,16 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
         $this->assertNotEmpty($result);
     }
 
-    public function testNsfwNotLoggedIn()
+    public function testSearchSafeLoggedIn()
+    {
+        $wh = new Wallhaven(getenv('WALLHAVENUSERNAME'), getenv('WALLHAVENPASSWORD'));
+
+        $result = $wh->search("macro", WH_CATEGORY_GENERAL, WH_PURITY_SAFE, "relevance", "desc", [], [], false);
+
+        $this->assertNotEmpty($result);
+    }
+
+    public function testSearchNsfwLoggedOut()
     {
         $wh = new Wallhaven();
 
@@ -35,7 +50,7 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
         $this->assertEmpty($result);
     }
 
-    public function testNsfwLoggedIn()
+    public function testSearchNsfwLoggedIn()
     {
         $wh = new Wallhaven(getenv('WALLHAVENUSERNAME'), getenv('WALLHAVENPASSWORD'));
 
@@ -64,7 +79,7 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
      * @expectedException Exception
      * @expectedExceptionMessage HTTP Error 403
      */
-    public function testNsfwWallpaperInformationNotLoggedIn()
+    public function testNsfwWallpaperInformationLoggedOut()
     {
         $wh = new Wallhaven();
         $wh->getWallpaperInformation(2480);

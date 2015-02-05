@@ -1,14 +1,14 @@
 <?php
 
 // Purity
-define("WH_PURITY_SAFE", 4);
+define("WH_PURITY_SAFE",    4);
 define("WH_PURITY_SKETCHY", 2);
-define("WH_PURITY_NSFW", 1);
+define("WH_PURITY_NSFW",    1);
 
 // Categories
 define("WH_CATEGORY_GENERAL", 4);
-define("WH_CATEGORY_ANIME", 2);
-define("WH_CATEGORY_PEOPLE", 1);
+define("WH_CATEGORY_ANIME",   2);
+define("WH_CATEGORY_PEOPLE",  1);
 
 /**
  * Class Wallhaven
@@ -94,10 +94,17 @@ class Wallhaven
         );
 
         // Purity
-        $regex[] = preg_match(
-            '/<input id="(sfw|sketchy|nsfw)" checked="checked" name="purity" type="radio" value="(sfw|sketchy|nsfw)">/',
-            $response, $purity
-        );
+        if ($this->_login) {
+            $regex[] = preg_match(
+                '/<input id="(sfw|sketchy|nsfw)" checked="checked" name="purity" type="radio" value="(sfw|sketchy|nsfw)">/',
+                $response, $purity
+            );
+        } else {
+            $regex[] = preg_match(
+                '/<input type="radio" checked="checked"><label class="purity (sfw|sketchy)">.+<\/label>/',
+                $response, $purity
+            );
+        }
 
         // Resolution
         $regex[] = preg_match(
@@ -196,15 +203,16 @@ class Wallhaven
         libxml_use_internal_errors(false);
         $figures = $dom->getElementsByTagName("figure");
 
+        $hrefIndex = $this->_login ? 2 : 1;
+
         $wallpapers = [];
         foreach ($figures as $figure)
         {
-            $url = $figure->childNodes->item(1)->getAttribute("href");
+            $url = $figure->childNodes->item($hrefIndex)->getAttribute("href");
 
             if (!preg_match('/wallpaper\/(\d+)/', $url, $id))
             {
-                // URL is not in the correct format, skip.
-                continue;
+                throw new Exception("Could not parse wallpaper URL. Has Wallhaven changed design?");
             }
 
             $id = $id[1];
