@@ -13,7 +13,7 @@ define("WH_CATEGORY_PEOPLE",  1);
 /**
  * Class Wallhaven
  *
- * @version 1.1.0
+ * @version 1.1.1
  */
 class Wallhaven
 {
