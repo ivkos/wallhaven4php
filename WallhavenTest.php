@@ -82,13 +82,13 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
     public function testNsfwWallpaperInformationLoggedOut()
     {
         $wh = new Wallhaven();
-        $wh->getWallpaperInformation(2480);
+        $wh->getWallpaperInformation(8273);
     }
 
     public function testNsfwWallpaperInformationLoggedIn()
     {
         $wh = new Wallhaven(getenv('WALLHAVENUSERNAME'), getenv('WALLHAVENPASSWORD'));
-        $wh->getWallpaperInformation(2480);
+        $wh->getWallpaperInformation(8273);
     }
 }
  
