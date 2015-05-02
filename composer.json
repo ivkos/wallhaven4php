@@ -1,0 +1,32 @@
+{
+    "name": "ivkos/wallhaven",
+    "description": "Wallhaven Parser",
+    "keywords": [
+        "wallhaven",
+        "wallpapers",
+        "downloader",
+        "batch",
+        "wallbase",
+        "api",
+        "library"
+    ],
+    "homepage": "https://github.com/ivkos/Wallhaven",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ivaylo Stoyanov",
+            "email": "me@ivkos.com",
+            "homepage": "https://github.com/ivkos"
+        }
+    ],
+    "require": {
+        "php": ">= 5.4.0",
+        "paquettg/php-html-parser": "1.*",
+        "guzzlehttp/guzzle": "5.*"
+    },
+    "autoload": {
+        "psr-4": {
+            "Wallhaven\\": "src/Wallhaven"
+        }
+    }
+}
