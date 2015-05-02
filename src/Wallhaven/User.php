@@ -30,21 +30,6 @@ class User
         return $this->username;
     }
 
-    // TODO Implement these.
-    // public function getWallpapers() {}
-
-    // public function getUsername () {}
-    // public function getLastActiveTime () {}
-    // public function getJoinedTime () {}
-    // public function getUploads () {}
-    // public function getFavorites () {}
-    // public function getSubscribers () {}
-    // public function getProfileViews () {}
-    // public function getProfileComments () {}
-    // public function getSiteComments () {}
-    // public function getWallpapersTagged () {}
-    // public function getWallpapersFlagged () {}
-
     /**
      * @return string Username.
      */

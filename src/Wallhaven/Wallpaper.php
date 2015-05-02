@@ -126,27 +126,22 @@ class Wallpaper
         }
 
         try {
-            $response = $this->client->get(Wallhaven::URL_HOME . Wallhaven::URL_WALLPAPER . '/' . $this->id)->getBody()
-                ->getContents();
+            $response = $this->client->get(Wallhaven::URL_WALLPAPER . '/' . $this->id)->getBody()->getContents();
         } catch (RequestException $e) {
             $code = $e->getResponse()->getStatusCode();
             if ($code == 403) {
                 throw new LoginException("Access to wallpaper is forbidden.");
+            } else if ($code == 404) {
+                throw new NotFoundException("Wallpaper not found.");
             } else {
-                if ($code == 404) {
-                    throw new NotFoundException("Wallpaper not found.");
-                } else {
-                    throw $e;
-                }
+                throw $e;
             }
         }
 
         $dom = new Dom();
         $dom->load($response);
 
-        if ($this->cacheEnabled) {
-            $this->dom = $dom;
-        }
+        $this->dom = $this->cacheEnabled ? $dom : null;
 
         return $dom;
     }
@@ -162,7 +157,8 @@ class Wallpaper
 
         $dom = $this->getDom();
 
-        $purityClass = $dom->find('#wallpaper-purity-form')->find('fieldset.framed')->find('input[checked="checked"]')
+        $purityClass
+            = $dom->find('#wallpaper-purity-form')[0]->find('fieldset.framed')[0]->find('input[checked="checked"]')[0]
             ->nextSibling()->getAttribute('class');
 
         $purityText = preg_split("/purity /", $purityClass)[1];
@@ -194,7 +190,7 @@ class Wallpaper
     {
         $dom = $this->getDom();
 
-        $result = $dom->find('div[data-storage-id="showcase-info"]')->find('dl')->find('dt');
+        $result = $dom->find('div[data-storage-id="showcase-info"]')->find('dl')[0]->find('dt');
 
         foreach ($result as $e) {
             if ($e->text == $contents) {
@@ -247,7 +243,7 @@ class Wallpaper
     public function getFavorites()
     {
         if (!$this->cacheEnabled || $this->favorites === null) {
-            $this->favorites = (int)$this->getSibling("Favorites")->find('a')->text;
+            $this->favorites = (int)$this->getSibling("Favorites")->find('a')[0]->text;
         }
 
         return $this->favorites;
@@ -260,7 +256,7 @@ class Wallpaper
     public function getFeaturedBy()
     {
         if (!$this->cacheEnabled || $this->featuredBy === null) {
-            $this->featuredBy = new User($this->getSibling("Featured by")->find('a')->text);
+            $this->featuredBy = new User($this->getSibling("Featured by")->find('a')[0]->text);
         }
 
         return $this->featuredBy;
@@ -273,7 +269,8 @@ class Wallpaper
     public function getFeaturedDate()
     {
         if (!$this->cacheEnabled || $this->featuredDate === null) {
-            $this->featuredDate = new DateTime($this->getSibling("Featured date")->find('time')->getAttribute('datetime'));
+            $this->featuredDate = new DateTime($this->getSibling("Featured date")
+                ->find('time')[0]->getAttribute('datetime'));
         }
 
         return $this->featuredDate;
@@ -285,7 +282,7 @@ class Wallpaper
     public function getUploadedBy()
     {
         if (!$this->cacheEnabled || $this->uploadedBy === null) {
-            $this->uploadedBy = new User($this->getSibling("Uploaded by")->find('a')->text);
+            $this->uploadedBy = new User($this->getSibling("Uploaded by")->find('a')[0]->text);
         }
 
         return $this->uploadedBy;
@@ -297,7 +294,7 @@ class Wallpaper
     public function getUploadedDate()
     {
         if (!$this->cacheEnabled || $this->uploadedDate === null) {
-            $this->uploadedDate = new DateTime($this->getSibling("Added")->find('time')->getAttribute('datetime'));
+            $this->uploadedDate = new DateTime($this->getSibling("Added")->find('time')[0]->getAttribute('datetime'));
         }
 
         return $this->uploadedDate;
@@ -306,28 +303,6 @@ class Wallpaper
     public function __toString()
     {
         return "Wallpaper " . $this->id;
-    }
-
-    /**
-     * @param bool $assumeJpg Assume the wallpaper is JPG. May speed up the method at the cost of potentially wrong URL.
-     *
-     * @return string URL.
-     * @throws LoginException
-     * @throws NotFoundException
-     */
-    public function getImageUrl($assumeJpg = false)
-    {
-        if ($assumeJpg) {
-            return Wallhaven::URL_IMG_PREFIX . $this->id . '.jpg';
-        }
-
-        if (!$this->cacheEnabled || $this->imageUrl === null) {
-            $dom = $this->getDom();
-            $url = $dom->find('img#wallpaper')->getAttribute('src');
-            $this->imageUrl = (parse_url($url, PHP_URL_SCHEME) ?: "http:") . $url;
-        }
-
-        return $this->imageUrl;
     }
 
     /**
@@ -350,5 +325,27 @@ class Wallpaper
         $this->client->get($url, [
             'save_to' => $directory . '/' . basename($url),
         ]);
+    }
+
+    /**
+     * @param bool $assumeJpg Assume the wallpaper is JPG. May speed up the method at the cost of potentially wrong URL.
+     *
+     * @return string URL.
+     * @throws LoginException
+     * @throws NotFoundException
+     */
+    public function getImageUrl($assumeJpg = false)
+    {
+        if ($assumeJpg) {
+            return Wallhaven::URL_IMG_PREFIX . $this->id . '.jpg';
+        }
+
+        if (!$this->cacheEnabled || $this->imageUrl === null) {
+            $dom = $this->getDom();
+            $url = $dom->find('img#wallpaper')[0]->getAttribute('src');
+            $this->imageUrl = (parse_url($url, PHP_URL_SCHEME) ?: "http:") . $url;
+        }
+
+        return $this->imageUrl;
     }
 }
