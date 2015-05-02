@@ -347,8 +347,10 @@ class Wallpaper
     {
         $client = new Client();
 
-        $client->get($this->getImageUrl(), [
-            'save_to' => $directory . '/wallhaven-' . $this->id . '.jpg',
+        $url = $this->getImageUrl();
+
+        $client->get($url, [
+            'save_to' => $directory . '/' . basename($url),
         ]);
     }
 }
