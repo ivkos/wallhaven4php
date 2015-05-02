@@ -1,9 +1,10 @@
 {
     "name": "ivkos/wallhaven",
-    "description": "Wallhaven Parser",
+    "description": "Wallhaven API - Search, filter and download wallpapers",
     "keywords": [
         "wallhaven",
         "wallpapers",
+        "download"
         "downloader",
         "batch",
         "wallbase",
