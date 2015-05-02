@@ -190,7 +190,7 @@ class Wallpaper
     {
         $dom = $this->getDom();
 
-        $result = $dom->find('div[data-storage-id="showcase-info"]')->find('dl')[0]->find('dt');
+        $result = $dom->find('div[data-storage-id="showcase-info"]')[0]->find('dl')[0]->find('dt');
 
         foreach ($result as $e) {
             if ($e->text == $contents) {
