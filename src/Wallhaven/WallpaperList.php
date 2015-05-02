@@ -30,7 +30,7 @@ class WallpaperList implements \ArrayAccess, \IteratorAggregate, \Countable
 
         $requests = [];
         foreach ($this->wallpapers as $w) {
-            $url = $w->getImageUrl();
+            $url = $w->getImageUrl(true);
 
             $requests[] = $client->createRequest('GET', $url, [
                 'save_to' => $directory . '/' . basename($url)

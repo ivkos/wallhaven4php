@@ -345,11 +345,9 @@ class Wallpaper
      */
     public function download($directory)
     {
-        $client = new Client();
-
         $url = $this->getImageUrl();
 
-        $client->get($url, [
+        $this->client->get($url, [
             'save_to' => $directory . '/' . basename($url),
         ]);
     }
