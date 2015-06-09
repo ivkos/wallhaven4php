@@ -183,8 +183,11 @@ class Wallhaven
             $id = preg_split('#' . self::URL_HOME . self::URL_WALLPAPER . '/#',
                 $figure->find('a.preview')->getAttribute('href'))[1];
 
-            $purityText = preg_split('/thumb purity-/', $figure->getAttribute('class'))[1];
-            $purity = constant('Wallhaven\Purity::' . strtoupper($purityText));
+            $classText = $figure->getAttribute('class');
+            preg_match("/thumb purity-(sfw|sketchy|nsfw) category-(general|anime|people)/", $classText, $classMatches);
+
+            $purity = constant('Wallhaven\Purity::' . strtoupper($classMatches[1]));
+            $category = constant('Wallhaven\Category::' . strtoupper($classMatches[2]));
             $resolution = str_replace(' ', '', trim($figure->find('span.wall-res')->text));
             $favorites = (int)$figure->find('a.wall-favs')->text;
 
@@ -192,6 +195,7 @@ class Wallhaven
 
             $w->setProperties([
                 'purity'     => $purity,
+                'category'   => $category,
                 'resolution' => $resolution,
                 'favorites'  => $favorites
             ]);
