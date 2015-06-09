@@ -4,6 +4,7 @@ namespace Wallhaven;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Pool;
+use Wallhaven\Exceptions\DownloadException;
 use Wallhaven\Exceptions\WallhavenException;
 
 /**
@@ -23,9 +24,17 @@ class WallpaperList implements \ArrayAccess, \IteratorAggregate, \Countable
      * Download all wallpapers in list.
      *
      * @param string $directory Where to download wallpapers.
+     *
+     * @throws DownloadException Thrown if the download directory cannot be created.
      */
     public function downloadAll($directory)
     {
+        if (!file_exists($directory)) {
+            if (!@mkdir($directory, null, true)) {
+                throw new DownloadException("The download directory cannot be created.");
+            }
+        }
+
         $client = new Client();
 
         $requests = [];

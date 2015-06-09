@@ -6,6 +6,7 @@ use DateTime;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use PHPHtmlParser\Dom;
+use Wallhaven\Exceptions\DownloadException;
 use Wallhaven\Exceptions\LoginException;
 use Wallhaven\Exceptions\NotFoundException;
 use Wallhaven\Exceptions\ParseException;
@@ -317,9 +318,17 @@ class Wallpaper
      * Download the wallpaper.
      *
      * @param string $directory Where to download the wallpaper.
+     *
+     * @throws DownloadException Thrown if the download directory cannot be created.
      */
     public function download($directory)
     {
+        if (!file_exists($directory)) {
+            if (!@mkdir($directory, null, true)) {
+                throw new DownloadException("The download directory cannot be created.");
+            }
+        }
+
         $url = $this->getImageUrl();
 
         $this->client->get($url, [
