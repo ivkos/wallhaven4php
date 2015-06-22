@@ -190,7 +190,8 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
         $this->assertEquals('Gandalf', $wh->user('Gandalf')->getUsername());
     }
 
-    public function testImageUrlPng() {
+    public function testImageUrlPng()
+    {
         $wh = new Wallhaven();
 
         $url = $wh->wallpaper(43118)->getImageUrl();
@@ -205,6 +206,20 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
         $thumbUrl = $wh->wallpaper(198320)->getThumbnailUrl();
 
         $this->assertEquals('http://alpha.wallhaven.cc/wallpapers/thumb/small/th-198320.jpg', $thumbUrl);
+    }
+
+    public function testFluentInterface()
+    {
+        $wh = new Wallhaven();
+        $result = $wh->filter()
+            ->purity(Purity::SFW)
+            ->sorting(Sorting::RANDOM)
+            ->pages(2)
+            ->getWallpapers();
+
+        $this->assertInstanceOf("Wallhaven\\WallpaperList", $result);
+        $this->assertNotEmpty($result);
+        $this->assertEquals(48, $result->count());
     }
 
     public function testCachedIsFaster()

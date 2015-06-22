@@ -143,6 +143,8 @@ class Wallhaven
      * @param string[] $resolutions Array of resolutions in the format of WxH, e.g.: <samp>['1920x1080',
      *                              '1280x720']</samp>
      * @param string[] $ratios      Array of ratios in the format of WxH, e.g.: <samp>['16x9', '4x3']</samp>
+     * @param int      $page        The id of the page to fetch. This is <em>not</em> a total number of pages to
+     *                              fetch.
      *
      * @return WallpaperList Wallpapers.
      */
@@ -153,7 +155,8 @@ class Wallhaven
         $sorting = Sorting::RELEVANCE,
         $order = Order::DESC,
         $resolutions = [],
-        $ratios = []
+        $ratios = [],
+        $page = 1
     ) {
         $result = $this->client->get(self::URL_SEARCH, [
             'query'   => [
@@ -164,7 +167,7 @@ class Wallhaven
                 'order'       => $order,
                 'resolutions' => implode(',', $resolutions),
                 'ratios'      => implode(',', $ratios),
-                'page'        => 1
+                'page'        => $page
             ],
             'headers' => [
                 'X-Requested-With' => 'XMLHttpRequest'
@@ -228,5 +231,15 @@ class Wallhaven
     public function wallpaper($id)
     {
         return new Wallpaper($id, $this->client);
+    }
+
+    /**
+     * Returns a new Filter object to use as a fluent interface.
+     *
+     * @return Filter
+     */
+    public function filter()
+    {
+        return new Filter($this);
     }
 }
