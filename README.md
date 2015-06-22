@@ -52,46 +52,57 @@ $wh = new Wallhaven('YOUR_USERNAME', 'YOUR_PASSWORD');
 ```
 
 ### Searching
-You can search for wallpapers and filter them using the `Wallhaven::search()` method. It takes the following arguments:
+You can search for wallpapers and filter them using the `Wallhaven::filter()` method. It returns a `Filter` object that acts as a fluent interface with the following methods:
 
- - Search query or #tagname, for example:
-	 -  `landscape`
-	 -  `#cars`
- - Category, or multiple categories as a bit field. Optional. For example:
+ - `keywords()` – Search query or #tagname, for example:
+	 -  `"landscape"`
+	 -  `"#cars"`
+ - `categories()` – Category, or multiple categories as a bit field. For example:
 	 - `Category::PEOPLE` 
 	 - `Category::GENERAL | Category::PEOPLE`
 	 - `Category::ALL` (default) - shorthand for `Category::GENERAL | Category::ANIME | Category::PEOPLE`
- - Purity, or multiple purities as a bit field. Optional. For example:
+ - `purity()` – Purity, or multiple purities as a bit field. For example:
 	 - `Purity::SFW` (default)
 	 - `Purity::SFW | Purity::SKETCHY`
 	 - `Purity::ALL` - shorthand for `Purity::SFW | Purity::SKETCHY | Purity::NSFW`
- - Sorting. Optional. Can be one of the following:
+ - `sorting()` – Sorting. Can be one of the following:
 	 - `Sorting::RELEVANCE` (default)
 	 - `Sorting::RANDOM`
 	 - `Sorting::DATE_ADDED`
 	 - `Sorting::VIEWS`
 	 - `Sorting::FAVORITES`
- - Order of results. Optional. Can be one of the following:
+ - `order()` – Order of results. Can be one of the following:
 	 - `Order::DESC` (default)
 	 - `Order::ASC`
- - Resolutions. Optional. Should be an array of strings in the format of WxH, for example:
+ - `resolutions()` – Resolutions. Should be an array of strings in the format of WxH, for example:
 	 - `["1920x1080"]`
 	 - `["1280x720", "2560x1440"]`
- - Ratios. Optional. Should be an array of strings in the format of WxH, for example:
+ - `ratios()` – Ratios. Should be an array of strings in the format of WxH, for example:
 	 - `["9x16"]`
 	 - `["16x9", "4x3"]`
+ - `pages()`– Number of pages to fetch from Wallhaven. A single page typically consists of 24, 32 or 64 wallpapers.
+ - `getWallpapers()` – Execute the search with the specified filters.
 
-Example code:
+Examples:
 ```php
-$wallpapers = $wh->search(
-	"#cars",
-	Category::GENERAL,
-	Purity::SFW,
-	Sorting::FAVORITES,
-	Order::DESC,
-	["1920x1080", "2560x1440"],
-	["16x9"]
-);
+$wallpapers = $wh->filter()
+	->keywords("#cars")
+	->categories(Category::GENERAL)
+	->purity(Purity::SFW)
+	->sorting(Sorting::FAVORITES)
+	->order(Order::DESC)
+	->resolutions(["1920x1080", "2560x1440"])
+	->ratios(["16x9"])
+	->pages(3)
+	->getWallpapers();
+```
+
+```php
+$wallpapers = $wh->filter()
+	->keywords("landscape")
+	->ratios(["16x9"])
+	->pages(2)
+	->getWallpapers();
 ```
 Returns a `WallpaperList` object containing `Wallpaper` objects that match the criteria above.
 
@@ -137,7 +148,7 @@ $w->getViews(); // int(3500)
 
 You can also get information about wallpapers from a search result:
 ```php
-$wallpapers = $wh->search(...);
+$wallpapers = $wh->filter()->keywords(...)->getWallpapers();
 
 $wallpapers[0]->getId();        // int(103929)
 $wallpapers[0]->getFavorites(); // int(367)
@@ -151,7 +162,7 @@ $wh->wallpaper(198320)->download("/home/user/wallpapers");
 
 To batch download wallpapers from a search result:
 ```php
-$wallpapers = $wh->search(...);
+$wallpapers = $wh->filter()->keywords(...)->getWallpapers();
 $wallpapers->downloadAll("/home/user/wallpapers");
 ```
 

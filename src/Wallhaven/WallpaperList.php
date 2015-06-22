@@ -126,12 +126,23 @@ class WallpaperList implements \ArrayAccess, \IteratorAggregate, \Countable
         return new \ArrayIterator($this->wallpapers);
     }
 
-
     /**
      * @return int Wallpaper count.
      */
     public function count()
     {
         return count($this->wallpapers);
+    }
+
+    /**
+     * All all items from the given list to the current list.
+     *
+     * @param WallpaperList $wallpaperList
+     */
+    public function addAll(WallpaperList $wallpaperList)
+    {
+        foreach ($wallpaperList as $wallpaper) {
+            $this->wallpapers[] = $wallpaper;
+        }
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Wallhaven\Exceptions;
 
-class DownloadException extends WallhavenException {
+class DownloadException extends WallhavenException
+{
 
 }
