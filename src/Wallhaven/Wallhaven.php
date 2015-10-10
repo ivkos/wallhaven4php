@@ -187,7 +187,7 @@ class Wallhaven
                 $figure->find('a.preview')->getAttribute('href'))[1];
 
             $classText = $figure->getAttribute('class');
-            preg_match("/thumb purity-(sfw|sketchy|nsfw) category-(general|anime|people)/", $classText, $classMatches);
+            preg_match("/thumb thumb-(sfw|sketchy|nsfw) thumb-(general|anime|people)/", $classText, $classMatches);
 
             $purity = constant('Wallhaven\Purity::' . strtoupper($classMatches[1]));
             $category = constant('Wallhaven\Category::' . strtoupper($classMatches[2]));
