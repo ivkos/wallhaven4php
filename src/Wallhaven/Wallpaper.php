@@ -244,7 +244,13 @@ class Wallpaper
     public function getFavorites()
     {
         if (!$this->cacheEnabled || $this->favorites === null) {
-            $this->favorites = (int)$this->getSibling("Favorites")->find('a')[0]->text;
+            $favsLink = $this->getSibling("Favorites")->find('a');
+
+            if (!$favsLink[0]) {
+                $this->favorites = 0;
+            } else {
+                $this->favorites = (int)$favsLink[0]->text;
+            }
         }
 
         return $this->favorites;
