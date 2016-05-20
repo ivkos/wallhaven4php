@@ -2,7 +2,6 @@ Wallhaven API for PHP
 ===================
 [![](https://img.shields.io/packagist/v/ivkos/wallhaven.svg?style=flat-square)](https://packagist.org/packages/ivkos/wallhaven)
 [![](https://img.shields.io/packagist/dt/ivkos/wallhaven.svg?style=flat-square)](https://packagist.org/packages/ivkos/wallhaven)
-[![](https://img.shields.io/travis/ivkos/Wallhaven.svg?style=flat-square)](https://travis-ci.org/ivkos/Wallhaven)
 [![](https://img.shields.io/scrutinizer/g/ivkos/Wallhaven.svg?style=flat-square)](https://scrutinizer-ci.com/g/ivkos/Wallhaven)
 [![](https://img.shields.io/codeclimate/github/ivkos/Wallhaven.svg?style=flat-square)](https://codeclimate.com/github/ivkos/Wallhaven)
 [![](https://img.shields.io/github/license/ivkos/Wallhaven.svg?style=flat-square)](LICENSE)
@@ -54,34 +53,34 @@ $wh = new Wallhaven('YOUR_USERNAME', 'YOUR_PASSWORD');
 ### Searching
 You can search for wallpapers and filter them using the `Wallhaven::filter()` method. It returns a `Filter` object that acts as a fluent interface with the following methods:
 
- - `keywords()` – Search query or #tagname, for example:
+ - `keywords()` â€“ Search query or #tagname, for example:
 	 -  `"landscape"`
 	 -  `"#cars"`
- - `categories()` – Category, or multiple categories as a bit field. For example:
+ - `categories()` â€“ Category, or multiple categories as a bit field. For example:
 	 - `Category::PEOPLE` 
 	 - `Category::GENERAL | Category::PEOPLE`
 	 - `Category::ALL` (default) - shorthand for `Category::GENERAL | Category::ANIME | Category::PEOPLE`
- - `purity()` – Purity, or multiple purities as a bit field. For example:
+ - `purity()` â€“ Purity, or multiple purities as a bit field. For example:
 	 - `Purity::SFW` (default)
 	 - `Purity::SFW | Purity::SKETCHY`
 	 - `Purity::ALL` - shorthand for `Purity::SFW | Purity::SKETCHY | Purity::NSFW`
- - `sorting()` – Sorting. Can be one of the following:
+ - `sorting()` â€“ Sorting. Can be one of the following:
 	 - `Sorting::RELEVANCE` (default)
 	 - `Sorting::RANDOM`
 	 - `Sorting::DATE_ADDED`
 	 - `Sorting::VIEWS`
 	 - `Sorting::FAVORITES`
- - `order()` – Order of results. Can be one of the following:
+ - `order()` â€“ Order of results. Can be one of the following:
 	 - `Order::DESC` (default)
 	 - `Order::ASC`
- - `resolutions()` – Resolutions. Should be an array of strings in the format of WxH, for example:
+ - `resolutions()` â€“ Resolutions. Should be an array of strings in the format of WxH, for example:
 	 - `["1920x1080"]`
 	 - `["1280x720", "2560x1440"]`
- - `ratios()` – Ratios. Should be an array of strings in the format of WxH, for example:
+ - `ratios()` â€“ Ratios. Should be an array of strings in the format of WxH, for example:
 	 - `["9x16"]`
 	 - `["16x9", "4x3"]`
- - `pages()`– Number of pages to fetch from Wallhaven. A single page typically consists of 24, 32 or 64 wallpapers.
- - `getWallpapers()` – Execute the search with the specified filters.
+ - `pages()`â€“ Number of pages to fetch from Wallhaven. A single page typically consists of 24, 32 or 64 wallpapers.
+ - `getWallpapers()` â€“ Execute the search with the specified filters.
 
 Examples:
 ```php
