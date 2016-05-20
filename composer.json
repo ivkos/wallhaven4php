@@ -22,7 +22,7 @@
     ],
     "require": {
         "php": ">= 5.4.0",
-        "paquettg/php-html-parser": "1.6.4",
+        "paquettg/php-html-parser": "1.7.0",
         "guzzlehttp/guzzle": "5.*"
     },
     "autoload": {
