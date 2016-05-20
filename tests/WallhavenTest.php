@@ -196,7 +196,7 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
 
         $url = $wh->wallpaper(43118)->getImageUrl();
 
-        $this->assertEquals('http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-43118.png', $url);
+        $this->assertEquals('https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-43118.png', $url);
     }
 
     public function testThumbnailUrl()
@@ -205,7 +205,7 @@ class WallhavenTest extends PHPUnit_Framework_TestCase
 
         $thumbUrl = $wh->wallpaper(198320)->getThumbnailUrl();
 
-        $this->assertEquals('http://alpha.wallhaven.cc/wallpapers/thumb/small/th-198320.jpg', $thumbUrl);
+        $this->assertEquals('https://alpha.wallhaven.cc/wallpapers/thumb/small/th-198320.jpg', $thumbUrl);
     }
 
     public function testFluentInterface()

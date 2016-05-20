@@ -15,12 +15,12 @@ use Wallhaven\Exceptions\WallhavenException;
  */
 class Wallhaven
 {
-    const URL_HOME         = "http://alpha.wallhaven.cc";
+    const URL_HOME         = "https://alpha.wallhaven.cc";
     const URL_WALLPAPER    = "/wallpaper";
     const URL_LOGIN        = "/auth/login";
     const URL_SEARCH       = "/search";
     const URL_THUMB_PREFIX = "/wallpapers/thumb/small/th-";
-    const URL_IMG_PREFIX   = "http://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
+    const URL_IMG_PREFIX   = "https://wallpapers.wallhaven.cc/wallpapers/full/wallhaven-";
 
     /**
      * @var Client HTTP Client.

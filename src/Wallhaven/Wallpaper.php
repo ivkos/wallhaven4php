@@ -358,7 +358,7 @@ class Wallpaper
         if (!$this->cacheEnabled || $this->imageUrl === null) {
             $dom = $this->getDom();
             $url = $dom->find('img#wallpaper')[0]->getAttribute('src');
-            $this->imageUrl = (parse_url($url, PHP_URL_SCHEME) ?: "http:") . $url;
+            $this->imageUrl = (parse_url($url, PHP_URL_SCHEME) ?: "https:") . $url;
         }
 
         return $this->imageUrl;
