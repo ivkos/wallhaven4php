@@ -129,7 +129,7 @@ class Wallpaper
         try {
             $response = $this->client->get(Wallhaven::URL_WALLPAPER . '/' . $this->id)->getBody()->getContents();
         } catch (RequestException $e) {
-            $code = $e->getResponse()->getStatusCode();
+            $code = $e->getCode();
             if ($code == 403) {
                 throw new LoginException("Access to wallpaper is forbidden.");
             } else if ($code == 404) {
