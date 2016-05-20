@@ -175,7 +175,8 @@ class Wallpaper
     public function getResolution()
     {
         if (!$this->cacheEnabled || $this->resolution === null) {
-            $this->resolution = str_replace(' ', '', $this->getSibling("Resolution")->text);
+            $resolutionElement = $this->getDom()->find('h3.showcase-resolution');
+            $this->resolution = str_replace(' ', '', $resolutionElement->text);
         }
 
         return $this->resolution;
@@ -199,7 +200,7 @@ class Wallpaper
             }
         }
 
-        throw new ParseException("Element's sibling not found.");
+        throw new ParseException("Sibling of element with content \"" . $contents . "\" not found.");
     }
 
     /**
@@ -263,7 +264,13 @@ class Wallpaper
     public function getFeaturedBy()
     {
         if (!$this->cacheEnabled || $this->featuredBy === null) {
-            $this->featuredBy = new User($this->getSibling("Featured by")->find('a')[0]->text);
+            $usernameElement = $this->getDom()
+                ->find("footer.sidebar-section")
+                ->find(".username");
+
+            if ($usernameElement != null) {
+                $this->featuredBy = new User($usernameElement->text);
+            }
         }
 
         return $this->featuredBy;
@@ -276,8 +283,13 @@ class Wallpaper
     public function getFeaturedDate()
     {
         if (!$this->cacheEnabled || $this->featuredDate === null) {
-            $this->featuredDate = new DateTime($this->getSibling("Featured date")
-                ->find('time')[0]->getAttribute('datetime'));
+            $featuredDateElement = $this->getDom()
+                ->find("footer.sidebar-section")
+                ->find("time");
+
+            if ($featuredDateElement != null) {
+                $this->featuredDate = new DateTime($featuredDateElement->getAttribute('datetime'));
+            }
         }
 
         return $this->featuredDate;
@@ -289,7 +301,12 @@ class Wallpaper
     public function getUploadedBy()
     {
         if (!$this->cacheEnabled || $this->uploadedBy === null) {
-            $this->uploadedBy = new User($this->getSibling("Uploaded by")->find('a')[0]->text);
+            $username = $this->getDom()
+                ->find(".showcase-uploader")
+                ->find("a.username")
+                ->text;
+
+            $this->uploadedBy = new User($username);
         }
 
         return $this->uploadedBy;
@@ -301,7 +318,9 @@ class Wallpaper
     public function getUploadedDate()
     {
         if (!$this->cacheEnabled || $this->uploadedDate === null) {
-            $this->uploadedDate = new DateTime($this->getSibling("Added")->find('time')[0]->getAttribute('datetime'));
+            $timeElement = $this->getDom()->find(".showcase-uploader > time:nth-child(4)")[0];
+
+            $this->uploadedDate = new DateTime($timeElement->getAttribute('datetime'));
         }
 
         return $this->uploadedDate;

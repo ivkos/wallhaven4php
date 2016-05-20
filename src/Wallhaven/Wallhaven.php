@@ -192,7 +192,7 @@ class Wallhaven
             $purity = constant('Wallhaven\Purity::' . strtoupper($classMatches[1]));
             $category = constant('Wallhaven\Category::' . strtoupper($classMatches[2]));
             $resolution = str_replace(' ', '', trim($figure->find('span.wall-res')->text));
-            $favorites = (int)$figure->find('a.wall-favs')->text;
+            $favorites = (int)$figure->find('.wall-favs')->text;
 
             $w = new Wallpaper($id, $this->client);
 
