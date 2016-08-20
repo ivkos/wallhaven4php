@@ -2,8 +2,6 @@ Wallhaven API for PHP
 ===================
 [![](https://img.shields.io/packagist/v/ivkos/wallhaven.svg?style=flat-square)](https://packagist.org/packages/ivkos/wallhaven)
 [![](https://img.shields.io/packagist/dt/ivkos/wallhaven.svg?style=flat-square)](https://packagist.org/packages/ivkos/wallhaven)
-[![](https://img.shields.io/scrutinizer/g/ivkos/Wallhaven.svg?style=flat-square)](https://scrutinizer-ci.com/g/ivkos/Wallhaven)
-[![](https://img.shields.io/codeclimate/github/ivkos/Wallhaven.svg?style=flat-square)](https://codeclimate.com/github/ivkos/Wallhaven)
 [![](https://img.shields.io/github/license/ivkos/Wallhaven.svg?style=flat-square)](LICENSE)
 
 ## Description
