@@ -4,6 +4,7 @@ namespace Wallhaven;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\TransferStats;
 use PHPHtmlParser\Dom;
 use Wallhaven\Exceptions\LoginException;
 use Wallhaven\Exceptions\WallhavenException;
@@ -66,14 +67,17 @@ class Wallhaven
         $this->initClient(true);
 
         $login = $this->client->post(self::URL_LOGIN, [
-            'body' => [
+            'form_params' => [
                 '_token'   => $this->getToken(),
                 'username' => $username,
                 'password' => $password
-            ]
+            ],
+            'on_stats' => function (TransferStats $stats) use (&$url) {
+                $url = $stats->getEffectiveUri();
+            }
         ]);
 
-        if ($login->getEffectiveUrl() == self::URL_HOME . self::URL_LOGIN) {
+        if ($url == self::URL_HOME . self::URL_LOGIN) {
             throw new LoginException("Incorrect username or password.");
         }
 
@@ -87,11 +91,16 @@ class Wallhaven
      */
     private function initClient($withCookies = false)
     {
-        $this->client = new Client(['base_url' => self::URL_HOME]);
 
         if ($withCookies) {
             $jar = new CookieJar();
-            $this->client->setDefaultOption('cookies', $jar);
+            $this->client = new Client(
+                [
+                    'base_uri' => self::URL_HOME,
+                    'cookies'  => $jar
+                ]);
+        } else {
+            $this->client = new Client(['base_uri' => self::URL_HOME]);
         }
     }
 
@@ -103,7 +112,7 @@ class Wallhaven
      */
     private function getToken()
     {
-        $body = $this->client->get()->getBody()->getContents();
+        $body = $this->client->get('/')->getBody()->getContents();
 
         $dom = new Dom();
         $dom->load($body);
